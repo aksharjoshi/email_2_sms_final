@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://connect.com" xmlns:apachesoap="http://xml.apache.org/xml-soap" xmlns:impl="http://connect.com" xmlns:intf="http://connect.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<!--WSDL created by Apache Axis version: 1.4
+Built on Apr 22, 2006 (06:55:48 PDT)-->
+ <wsdl:types>
+  <schema elementFormDefault="qualified" targetNamespace="http://connect.com" xmlns="http://www.w3.org/2001/XMLSchema">
+   <element name="setUserid">
+    <complexType>
+     <sequence>
+      <element name="userunkid" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setUseridResponse">
+    <complexType/>
+   </element>
+   <element name="getUserid">
+    <complexType/>
+   </element>
+   <element name="getUseridResponse">
+    <complexType>
+     <sequence>
+      <element name="getUseridReturn" type="xsd:int"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setEmailid">
+    <complexType>
+     <sequence>
+      <element name="email" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setEmailidResponse">
+    <complexType/>
+   </element>
+   <element name="getEmailid">
+    <complexType/>
+   </element>
+   <element name="getEmailidResponse">
+    <complexType>
+     <sequence>
+      <element name="getEmailidReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setLastname">
+    <complexType>
+     <sequence>
+      <element name="lastname" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setLastnameResponse">
+    <complexType/>
+   </element>
+   <element name="getLastname">
+    <complexType/>
+   </element>
+   <element name="getLastnameResponse">
+    <complexType>
+     <sequence>
+      <element name="getLastnameReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setFirstname">
+    <complexType>
+     <sequence>
+      <element name="firstname" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+   <element name="setFirstnameResponse">
+    <complexType/>
+   </element>
+   <element name="getFirstname">
+    <complexType/>
+   </element>
+   <element name="getFirstnameResponse">
+    <complexType>
+     <sequence>
+      <element name="getFirstnameReturn" type="xsd:string"/>
+     </sequence>
+    </complexType>
+   </element>
+  </schema>
+ </wsdl:types>
+
+   <wsdl:message name="getFirstnameRequest">
+
+      <wsdl:part element="impl:getFirstname" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setUseridRequest">
+
+      <wsdl:part element="impl:setUserid" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setEmailidRequest">
+
+      <wsdl:part element="impl:setEmailid" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getFirstnameResponse">
+
+      <wsdl:part element="impl:getFirstnameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEmailidRequest">
+
+      <wsdl:part element="impl:getEmailid" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getLastnameResponse">
+
+      <wsdl:part element="impl:getLastnameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setFirstnameResponse">
+
+      <wsdl:part element="impl:setFirstnameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setUseridResponse">
+
+      <wsdl:part element="impl:setUseridResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getEmailidResponse">
+
+      <wsdl:part element="impl:getEmailidResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getLastnameRequest">
+
+      <wsdl:part element="impl:getLastname" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setLastnameRequest">
+
+      <wsdl:part element="impl:setLastname" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setEmailidResponse">
+
+      <wsdl:part element="impl:setEmailidResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUseridResponse">
+
+      <wsdl:part element="impl:getUseridResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setLastnameResponse">
+
+      <wsdl:part element="impl:setLastnameResponse" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="setFirstnameRequest">
+
+      <wsdl:part element="impl:setFirstname" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUseridRequest">
+
+      <wsdl:part element="impl:getUserid" name="parameters">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:portType name="Client">
+
+      <wsdl:operation name="setUserid">
+
+         <wsdl:input message="impl:setUseridRequest" name="setUseridRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setUseridResponse" name="setUseridResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUserid">
+
+         <wsdl:input message="impl:getUseridRequest" name="getUseridRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getUseridResponse" name="getUseridResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEmailid">
+
+         <wsdl:input message="impl:setEmailidRequest" name="setEmailidRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setEmailidResponse" name="setEmailidResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEmailid">
+
+         <wsdl:input message="impl:getEmailidRequest" name="getEmailidRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getEmailidResponse" name="getEmailidResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setLastname">
+
+         <wsdl:input message="impl:setLastnameRequest" name="setLastnameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setLastnameResponse" name="setLastnameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastname">
+
+         <wsdl:input message="impl:getLastnameRequest" name="getLastnameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getLastnameResponse" name="getLastnameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setFirstname">
+
+         <wsdl:input message="impl:setFirstnameRequest" name="setFirstnameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:setFirstnameResponse" name="setFirstnameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getFirstname">
+
+         <wsdl:input message="impl:getFirstnameRequest" name="getFirstnameRequest">
+
+       </wsdl:input>
+
+         <wsdl:output message="impl:getFirstnameResponse" name="getFirstnameResponse">
+
+       </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:portType>
+
+   <wsdl:binding name="ClientSoapBinding" type="impl:Client">
+
+      <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+      <wsdl:operation name="setUserid">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setUseridRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setUseridResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getUserid">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getUseridRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getUseridResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setEmailid">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setEmailidRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setEmailidResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getEmailid">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getEmailidRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getEmailidResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setLastname">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setLastnameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setLastnameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getLastname">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getLastnameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getLastnameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="setFirstname">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="setFirstnameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="setFirstnameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+      <wsdl:operation name="getFirstname">
+
+         <wsdlsoap:operation soapAction=""/>
+
+         <wsdl:input name="getFirstnameRequest">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:input>
+
+         <wsdl:output name="getFirstnameResponse">
+
+            <wsdlsoap:body use="literal"/>
+
+         </wsdl:output>
+
+      </wsdl:operation>
+
+   </wsdl:binding>
+
+   <wsdl:service name="ClientService">
+
+      <wsdl:port binding="impl:ClientSoapBinding" name="Client">
+
+         <wsdlsoap:address location="http://localhost:8080/Email-to-sms-final/services/Client"/>
+
+      </wsdl:port>
+
+   </wsdl:service>
+
+</wsdl:definitions>

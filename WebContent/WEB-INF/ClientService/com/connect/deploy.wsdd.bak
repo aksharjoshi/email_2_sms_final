@@ -1,0 +1,46 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from ClientService WSDL service -->
+
+  <service name="Client" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://connect.com"/>
+      <parameter name="wsdlServiceElement" value="ClientService"/>
+      <parameter name="schemaQualified" value="http://connect.com"/>
+      <parameter name="wsdlServicePort" value="Client"/>
+      <parameter name="className" value="com.connect.ClientSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="Client"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="setUserid" qname="operNS:setUserid" xmlns:operNS="http://connect.com" soapAction="" >
+        <parameter qname="pns:userunkid" xmlns:pns="http://connect.com" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getUserid" qname="operNS:getUserid" xmlns:operNS="http://connect.com" returnQName="retNS:getUseridReturn" xmlns:retNS="http://connect.com" returnType="rtns:int" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <operation name="setEmailid" qname="operNS:setEmailid" xmlns:operNS="http://connect.com" soapAction="" >
+        <parameter qname="pns:email" xmlns:pns="http://connect.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getEmailid" qname="operNS:getEmailid" xmlns:operNS="http://connect.com" returnQName="retNS:getEmailidReturn" xmlns:retNS="http://connect.com" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <operation name="setLastname" qname="operNS:setLastname" xmlns:operNS="http://connect.com" soapAction="" >
+        <parameter qname="pns:lastname" xmlns:pns="http://connect.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getLastname" qname="operNS:getLastname" xmlns:operNS="http://connect.com" returnQName="retNS:getLastnameReturn" xmlns:retNS="http://connect.com" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <operation name="setFirstname" qname="operNS:setFirstname" xmlns:operNS="http://connect.com" soapAction="" >
+        <parameter qname="pns:firstname" xmlns:pns="http://connect.com" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getFirstname" qname="operNS:getFirstname" xmlns:operNS="http://connect.com" returnQName="retNS:getFirstnameReturn" xmlns:retNS="http://connect.com" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <parameter name="allowedMethods" value="setLastname setFirstname getFirstname setEmailid getEmailid getUserid getLastname setUserid"/>
+
+  </service>
+</deployment>
