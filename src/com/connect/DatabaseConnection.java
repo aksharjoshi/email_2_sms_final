@@ -117,7 +117,7 @@ public class DatabaseConnection {
 	public ResultSet selectDb(String query) throws SQLException {
 		
 		rs=stmt.executeQuery(query);
-		rs.close();
+		//rs.close();
 		return rs;
 	}
 	
