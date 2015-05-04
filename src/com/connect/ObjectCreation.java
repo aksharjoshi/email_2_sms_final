@@ -24,19 +24,28 @@ public class ObjectCreation {
 			System.out.println("No records...");
 		}
 
+		//ResultSet r=null;
+		
 		MailConnect ob[]=new MailConnect[num];
 		//ob[1].connect();
 
 		for(int i=0; i<num; i++){
-			String nm;
+			//String nm;
 			try {
-				ResultSet r=conn.selectDb("select username from client_master");
+				ResultSet r=conn.selectDb("select email_address,service_password,serviceunkid from client_service where email_address is not null");
+				
+				if(r.next())
+				{
+					System.out.println(r.getString("email_address"));
+					
+					ob[i]=new MailConnect(r.getString("email_address"),r.getString("service_password"),r.getString("serviceunkid"));
+					ob[i].start();
+				}
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ob[i]=new MailConnect();
-			ob[i].start();
 		}	
 	}
 

@@ -1,11 +1,15 @@
 package com.connect;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
+import javax.mail.internet.InternetHeaders;
 import javax.mail.search.FlagTerm;
 
 public class MailConnect extends Thread{
@@ -14,24 +18,58 @@ public class MailConnect extends Thread{
 	Session session=null;
 	Store store=null;
 	Folder folder=null;
-	String mailService="imap-mail.outlook.com";
-	String username;
+	String mailService="";//"imap-mail.outlook.com";
+	String username, pass, unkid;
 	DatabaseConnection db;
 
-	public MailConnect() {
+	public MailConnect(String uname,String pass, String unid) {
 		// TODO Auto-generated constructor stub
+		
 		db=new DatabaseConnection();
+		this.username=uname.trim();
+		this.pass=pass.trim();
+		unkid=unid;
+		
+		System.out.println("username in mail connect is: "+ username + "///////////////////////");
+		System.out.println("password is: "+pass);
+		String query="select connection_string from service_master where serviceunkid="+unkid;
+		
+		try {
+			ResultSet rs=db.selectDb(query);
+			
+			if(rs.next())
+				mailService=rs.getString("connection_string").trim();
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		props = new Properties();
 		username=null;
 		
 		props.setProperty("mail.store.protocol", "imaps");
 		session = Session.getInstance(props, null);
+		//new GMailAuthenticator("akshar.joshi91@gmail.com", "navy4242"));
+		
+		
+		
         try {
 			store = session.getStore();
+			System.out.println("mail serice is: " + mailService);
+			
+			store.connect(mailService,"akshar.joshi91@gmail.com", "navy4242");
+	        
 		} catch (NoSuchProviderException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+        catch(Exception e2) {
+        	e2.printStackTrace();
+        }
 		
 	}
 		
@@ -48,7 +86,7 @@ public class MailConnect extends Thread{
 			executor.scheduleAtFixedRate(periodicTask, 0, 60, TimeUnit.SECONDS);
 	}
 
-	public void selectService() {
+	/*public void selectService() {
         System.out.println("in select service");
         
         String query="select serviceunkid from service_service where clientunkid in (select clientunkid from client_master where username='akshar');";
@@ -64,21 +102,22 @@ public class MailConnect extends Thread{
         	e.printStackTrace();
         } */
         
-	}
+	//}
 	
 	public void connect() {
-		props = new Properties();
+		//props = new Properties();
         System.out.println("here before prop");
 
-        props.setProperty("mail.store.protocol", "imaps");
+        //props.setProperty("mail.store.protocol", "imaps");
         try {
         	/*System.out.println("Before session");
             session = Session.getInstance(props, null);
             store = session.getStore();
             System.out.println("here");
             */
-        	store.connect(mailService, "aksharj@outlook.com", "Navy4242");
-            System.out.println("connected");
+        	
+        	System.out.println("For "+username+" ***************************");
+        	System.out.println("connected");
             folder = store.getFolder("INBOX");
             folder.open(Folder.READ_ONLY);
             System.out.println("read");
@@ -96,11 +135,18 @@ public class MailConnect extends Thread{
                 System.out.println("FROM:" + address.toString());
             }
             Multipart mp = (Multipart) msg.getContent();
-            
+          
             BodyPart bp = mp.getBodyPart(0);
             System.out.println("SENT DATE:" + msg.getSentDate());
             System.out.println("SUBJECT:" + msg.getSubject());
             System.out.println("CONTENT:" + bp.getContent());
+            
+            String cont=bp.getContent().toString();
+            
+            System.out.println("content to string is: "+cont);
+            
+            SendSMS s=new SendSMS();
+            s.runCheckSend();
             
             folder.close(false);
           //  inbox.close();
@@ -108,4 +154,6 @@ public class MailConnect extends Thread{
             mex.printStackTrace();
         }
 	}
+	
+	
 }
