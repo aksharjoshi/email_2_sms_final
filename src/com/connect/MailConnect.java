@@ -131,8 +131,11 @@ public class MailConnect extends Thread{
             System.out.println("count is : "+folder.getMessageCount());
             
             Address[] in = msg.getFrom();
+            String from=null;
+            
             for (Address address : in) {
                 System.out.println("FROM:" + address.toString());
+                from=address.toString();
             }
             Multipart mp = (Multipart) msg.getContent();
           
@@ -142,11 +145,15 @@ public class MailConnect extends Thread{
             System.out.println("CONTENT:" + bp.getContent());
             
             String cont=bp.getContent().toString();
+            String sub=msg.getSubject();
             
             System.out.println("content to string is: "+cont);
             
             SendSMS s=new SendSMS();
-            s.runCheckSend();
+            
+            s.checkFrom(unkid,from,msg.getSubject());
+            s.checkBlock(unkid);
+            s.runCheckSend(unkid);
             
             folder.close(false);
           //  inbox.close();
