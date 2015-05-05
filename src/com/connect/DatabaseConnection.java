@@ -13,8 +13,8 @@ public class DatabaseConnection {
 	public DatabaseConnection(){		
 		try {			
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
-				//con = DriverManager.getConnection("jdbc:mysql://10.189.74.87:3306/dhvani_test","root","");
-				con = DriverManager.getConnection("jdbc:mysql://us-cdbr-iron-east-02.cleardb.net:3306/ad_8450c6a268b54de","bf076a1488c6b3","3dc63386");
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/email_2_sms","root","");
+				//con = DriverManager.getConnection("jdbc:mysql://us-cdbr-iron-east-02.cleardb.net:3306/ad_8450c6a268b54de","bf076a1488c6b3","3dc63386");
 				stmt = con.createStatement();
 				stmt2 = con.createStatement();
 				

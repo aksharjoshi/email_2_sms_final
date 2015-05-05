@@ -29,6 +29,7 @@ public class TwilioTest {
 		params.add(new BasicNameValuePair("From", "+14796897300")); 
 		params.add(new BasicNameValuePair("Body", "You have a new mail from"+email_from+". Kindly check"));
 		
+		System.out.println("in twilio..");
 		MessageFactory messageFactory = client.getAccount().getMessageFactory(); 
 		Message message = null;
 		
@@ -39,7 +40,7 @@ public class TwilioTest {
 			e.printStackTrace();
 		} 
 		
-		System.out.println(message.getSid()); 
+		System.out.println("id is ..."+message.getSid()); 
 		
 	}
 }

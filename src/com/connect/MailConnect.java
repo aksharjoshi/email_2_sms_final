@@ -59,6 +59,7 @@ public class MailConnect extends Thread{
 			System.out.println("mail serice is: " + mailService);
 			
 			store.connect(mailService,"akshar.joshi91@gmail.com", "navy4242");
+			//rs.close();
 	        
 		} catch (NoSuchProviderException e) {
 			// TODO Auto-generated catch block
@@ -137,24 +138,63 @@ public class MailConnect extends Thread{
                 System.out.println("FROM:" + address.toString());
                 from=address.toString();
             }
-            Multipart mp = (Multipart) msg.getContent();
-          
-            BodyPart bp = mp.getBodyPart(0);
-            System.out.println("SENT DATE:" + msg.getSentDate());
-            System.out.println("SUBJECT:" + msg.getSubject());
-            System.out.println("CONTENT:" + bp.getContent());
             
-            String cont=bp.getContent().toString();
-            String sub=msg.getSubject();
+            if(from.indexOf('<')>0)
+            	from=from.substring(from.indexOf('<')+1,from.indexOf('>'));
+            
+            System.out.println("from value is: "+from);
+            
+            Object o=msg.getContent();
+            BodyPart bp = null;
+            
+            String cont,sub;
+            
+            if(o instanceof String) {
+            	System.out.println("%%%%%%%%%%%%%%%%%%% HERE %%%%%%%%%%%%%%%%%%");
+            	System.out.println("SENT DATE:" + msg.getSentDate());
+                System.out.println("SUBJECT:" + msg.getSubject());
+                
+                System.out.println("CONTENT:" + (String)o);
+                
+                cont=(String)o;
+                sub=msg.getSubject();
+            }
+            else {
+            	Multipart mp = (Multipart) msg.getContent();
+                
+            	 bp= mp.getBodyPart(0);
+                System.out.println("&&&&&&&&&&&&&&&&&&&&& THERE &&&&&&&&&&&&&&&&&&&&&&&&"); 
+                System.out.println("SENT DATE:" + msg.getSentDate());
+                System.out.println("SUBJECT:" + msg.getSubject());
+                
+                //System.out.println("CONTENT:" + (String)o);
+                System.out.println("CONTENT:" + bp.getContent());
+                cont=bp.getContent().toString();
+                sub=msg.getSubject();
+                
+            }
+              
+            
+            
             
             System.out.println("content to string is: "+cont);
             
             SendSMS s=new SendSMS();
             
-            s.checkFrom(unkid,from,msg.getSubject());
-            s.checkBlock(unkid);
-            s.runCheckSend(unkid);
+            System.out.println("before check");
             
+            if(s.checkFrom(unkid,from,msg.getSubject())) {
+            	System.out.println("message sent");
+            }
+            else {
+            	System.out.println("mail from unknown: "+from);
+            	s.runCheckSend(unkid,cont);            	
+            }
+            
+            System.out.println("after check........");
+            /*s.checkBlock(unkid);
+            s.runCheckSend(unkid);
+            */
             folder.close(false);
           //  inbox.close();
         } catch (Exception mex) {
