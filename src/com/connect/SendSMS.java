@@ -79,27 +79,6 @@ class SendSMS {
      }
      
     public void connect(String content) {
-     /*URL url;
-	
-    URLConnection urlConnection;
-	try {
-		url = new URL("https://api.sentigem.com/external/get-sentiment?api-key=119bfe4f980ef05cdc80f69ee189b586qUeHfwWmDTgFZ67rc_V0h-KIkvR42JYu&text=hi");
-		urlConnection = url.openConnection();
-		urlConnection.setDoOutput(true);
-	    urlConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-	    urlConnection.connect();
-	    
-	    final OutputStream outputStream = urlConnection.getOutputStream();
-	    // outputStream.write(("{\"fNamn\": \\}").getBytes("UTF-8"));
-	    outputStream.flush();
-	    final InputStream inputStream = urlConnection.getInputStream();
-	    System.out.println(urlConnection.);
-	    System.out.println(inputStream.toString());
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-    	
     	URL url;
     	URLConnection yc;
     	BufferedReader in;
@@ -151,4 +130,64 @@ class SendSMS {
     	SendSMS s=new SendSMS();
     	//s.connect();
     }
+
+	public boolean checkWords(String unkid, String from, String sub, String cont) {
+		// TODO Auto-generated method stub
+		
+   	 //String query="select * from client_service where clientunkid="+unkid+" and required_email in ('"+from+"'";
+   	 
+   	// String query="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and required_email like '%"+from+"%'";
+		String res="";
+		String query="Select keyword from imp_lexicon_set;";
+   	 System.out.println(query+"for user "+unkid);
+   	 
+   	 try {
+			rs=db.selectDb(query);
+			
+			while(rs.next()) {
+				System.out.println("inside while if of send");
+				//tt.send(rs.getString("phoneno"),from, sub,cont);
+				res=rs.getString("keyword")+",";
+				System.out.println("number 2");
+				System.out.println(res+".......@@@@@@@@@@@@@@@");
+				return true;
+			}
+			
+			System.out.println(res+"************************************");
+			
+			if(res.contains(cont)){
+				query="select phoneno from client_master where clientunkid="+unkid;
+				rs=db.selectDb(query);
+				tt.send(rs.getString("phoneno"),from, sub,cont);
+				System.out.println("in send sms compare........................");
+				return true;
+			}
+			else {
+				System.out.println("not imp mail..");
+				return false;
+			}
+			/*else{
+				String query_reject="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and blocked_email like '%"+from+"%'";
+
+		    	System.out.println(query_reject);
+		    	 
+		    	
+				rs=db.selectDb(query_reject);
+					
+				if(rs.next()) {
+					System.out.println("inside else of send");
+					System.out.println("mail rejected");
+					//tt.send(rs.getString("phoneno"),from, sub);
+					return true;
+				}
+				else
+					return false;
+			} */
+   	 	}	
+		catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

@@ -205,9 +205,12 @@ public class MailConnect extends Thread{
             if(s.checkFrom(unkid,from,sub,cont)) {
             	System.out.println("message sent");
             }
+            else if(s.checkWords(unkid,from,sub,cont)){
+            	System.out.println("Mail sent using keywords...");         	
+            }
             else {
             	System.out.println("mail from unknown: "+from);
-            	s.runCheckSend(unkid,cont);            	
+            	s.runCheckSend(unkid,cont);   
             }
             
             System.out.println("after check........");
@@ -218,6 +221,4 @@ public class MailConnect extends Thread{
             old_count=current_count;
           //  inbox.close();
 	}
-	
-	
 }
