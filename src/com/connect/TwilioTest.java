@@ -23,11 +23,11 @@ public class TwilioTest {
 		params = new ArrayList<NameValuePair>(); 
 	}
 	
-	public void send(String to_num,String email_from, String sub) {
+	public void send(String to_num,String email_from, String sub,String cont) {
 		// Build the parameters 		
 		params.add(new BasicNameValuePair("To", to_num)); 
 		params.add(new BasicNameValuePair("From", "+14796897300")); 
-		params.add(new BasicNameValuePair("Body", "You have a new mail from"+email_from+". Kindly check"));
+		params.add(new BasicNameValuePair("Body", "You have a new mail from"+email_from+". \nWith the subject: "+sub+"\n Content of the mail is: "+cont+"Kindly check"));
 		
 		System.out.println("in twilio..");
 		MessageFactory messageFactory = client.getAccount().getMessageFactory(); 

@@ -34,7 +34,7 @@ public class ObjectCreation {
 			try {
 				ResultSet r=conn.selectDb("select email_address,service_password,serviceunkid from client_service where email_address is not null");
 				
-				if(r.next())
+				while(r.next())
 				{
 					System.out.println(r.getString("email_address"));
 					

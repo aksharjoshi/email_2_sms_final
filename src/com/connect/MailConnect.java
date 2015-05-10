@@ -21,6 +21,7 @@ public class MailConnect extends Thread{
 	String mailService="";//"imap-mail.outlook.com";
 	String username, pass, unkid;
 	DatabaseConnection db;
+	int old_count=0, current_count=0;
 
 	public MailConnect(String uname,String pass, String unid) {
 		// TODO Auto-generated constructor stub
@@ -46,7 +47,7 @@ public class MailConnect extends Thread{
 		}
 		
 		props = new Properties();
-		username=null;
+		//username=null;
 		
 		props.setProperty("mail.store.protocol", "imaps");
 		session = Session.getInstance(props, null);
@@ -58,7 +59,8 @@ public class MailConnect extends Thread{
 			store = session.getStore();
 			System.out.println("mail serice is: " + mailService);
 			
-			store.connect(mailService,"akshar.joshi91@gmail.com", "navy4242");
+			System.out.println(username+" "+pass);
+			store.connect(mailService,username,pass);//"akshar.joshi91@gmail.com", "navy4242");
 			//rs.close();
 	        
 		} catch (NoSuchProviderException e) {
@@ -116,7 +118,6 @@ public class MailConnect extends Thread{
             store = session.getStore();
             System.out.println("here");
             */
-        	
         	System.out.println("For "+username+" ***************************");
         	System.out.println("connected");
             folder = store.getFolder("INBOX");
@@ -126,64 +127,82 @@ public class MailConnect extends Thread{
             FlagTerm ft = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
             Message[] UNReadmessages = folder.search(ft);
             
-            System.out.println("unread: "+(folder.getMessageCount()-UNReadmessages.length));
+            current_count=folder.getMessageCount();
+        	
+        	if(current_count>old_count){
+        		
+                
+                System.out.println("unread: "+(folder.getMessageCount()-UNReadmessages.length));
 
-            Message msg = folder.getMessage(folder.getMessageCount());
-            System.out.println("count is : "+folder.getMessageCount());
-            
-            Address[] in = msg.getFrom();
-            String from=null;
-            
-            for (Address address : in) {
-                System.out.println("FROM:" + address.toString());
-                from=address.toString();
-            }
-            
-            if(from.indexOf('<')>0)
-            	from=from.substring(from.indexOf('<')+1,from.indexOf('>'));
-            
-            System.out.println("from value is: "+from);
-            
-            Object o=msg.getContent();
-            BodyPart bp = null;
-            
-            String cont,sub;
-            
-            if(o instanceof String) {
-            	System.out.println("%%%%%%%%%%%%%%%%%%% HERE %%%%%%%%%%%%%%%%%%");
-            	System.out.println("SENT DATE:" + msg.getSentDate());
-                System.out.println("SUBJECT:" + msg.getSubject());
+                Message msg = folder.getMessage(folder.getMessageCount());
+                System.out.println("count is : "+folder.getMessageCount());
                 
-                System.out.println("CONTENT:" + (String)o);
+                Address[] in = msg.getFrom();
+                String from=null;
                 
-                cont=(String)o;
-                sub=msg.getSubject();
+                for (Address address : in) {
+                    System.out.println("FROM:" + address.toString());
+                    from=address.toString();
+                }
+                
+                if(from.indexOf('<')>0)
+                	from=from.substring(from.indexOf('<')+1,from.indexOf('>'));
+                
+                System.out.println("from value is: "+from);
+                
+                Object o=msg.getContent();
+                BodyPart bp = null;
+                
+                String cont,sub;
+                
+                if(o instanceof String) {
+                	System.out.println("%%%%%%%%%%%%%%%%%%% HERE %%%%%%%%%%%%%%%%%%");
+                	System.out.println("SENT DATE:" + msg.getSentDate());
+                    System.out.println("SUBJECT:" + msg.getSubject());
+                    
+                    System.out.println("CONTENT:" + (String)o);
+                    
+                    cont=(String)o;
+                    sub=msg.getSubject();
+                }
+                else {
+                	Multipart mp = (Multipart) msg.getContent();
+                    
+                	 bp= mp.getBodyPart(0);
+                    System.out.println("&&&&&&&&&&&&&&&&&&&&& THERE &&&&&&&&&&&&&&&&&&&&&&&&"); 
+                    System.out.println("SENT DATE:" + msg.getSentDate());
+                    System.out.println("SUBJECT:" + msg.getSubject());
+                    
+                    //System.out.println("CONTENT:" + (String)o);
+                    System.out.println("CONTENT:" + bp.getContent());
+                    cont=bp.getContent().toString();
+                    sub=msg.getSubject();   
+                }
+                System.out.println("content to string is: "+cont);
+            	initiateSendSms(from,sub,cont);
             }
+        	
+            
+            
             else {
-            	Multipart mp = (Multipart) msg.getContent();
-                
-            	 bp= mp.getBodyPart(0);
-                System.out.println("&&&&&&&&&&&&&&&&&&&&& THERE &&&&&&&&&&&&&&&&&&&&&&&&"); 
-                System.out.println("SENT DATE:" + msg.getSentDate());
-                System.out.println("SUBJECT:" + msg.getSubject());
-                
-                //System.out.println("CONTENT:" + (String)o);
-                System.out.println("CONTENT:" + bp.getContent());
-                cont=bp.getContent().toString();
-                sub=msg.getSubject();
-                
+            	System.out.println("no new mail recieved");
             }
-              
-            
-            
-            
-            System.out.println("content to string is: "+cont);
-            
+           // folder.close(false);
+            old_count=current_count;
+            //  inbox.close();
+        	} 
+        	catch (Exception mex) {
+        		mex.printStackTrace();
+        	}
+	}
+	
+	public void initiateSendSms(String from, String sub,String cont) {
+		
             SendSMS s=new SendSMS();
             
             System.out.println("before check");
             
-            if(s.checkFrom(unkid,from,msg.getSubject())) {
+            if(s.checkFrom(unkid,from,sub,cont)) {
             	System.out.println("message sent");
             }
             else {
@@ -195,11 +214,9 @@ public class MailConnect extends Thread{
             /*s.checkBlock(unkid);
             s.runCheckSend(unkid);
             */
-            folder.close(false);
+            //folder.close(false);
+            old_count=current_count;
           //  inbox.close();
-        } catch (Exception mex) {
-            mex.printStackTrace();
-        }
 	}
 	
 	

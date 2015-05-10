@@ -17,5 +17,9 @@
 	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/mysql-connector-java-5.1.35-bin.jar"/>
 	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/mail.jar"/>
+	<classpathentry kind="lib" path="/Users/Akshar/Downloads/lingpipe-4.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Akshar/Desktop/lucene-5.1.0/core/lucene-core-5.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Akshar/Downloads/porter-stemmer-1.4.jar"/>
+	<classpathentry kind="lib" path="/Users/Akshar/Downloads/lucene-5.1.0/demo/lucene-demo-5.1.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
