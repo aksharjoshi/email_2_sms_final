@@ -32,13 +32,13 @@ public class ObjectCreation {
 		for(int i=0; i<num; i++){
 			//String nm;
 			try {
-				ResultSet r=conn.selectDb("select email_address,service_password,serviceunkid from client_service where email_address is not null");
+				ResultSet r=conn.selectDb("select email_address,service_password,serviceunkid,clientunkid from client_service where email_address is not null");
 				
 				while(r.next())
 				{
 					System.out.println(r.getString("email_address"));
 					
-					ob[i]=new MailConnect(r.getString("email_address"),r.getString("service_password"),r.getString("serviceunkid"));
+					ob[i]=new MailConnect(r.getString("email_address"),r.getString("service_password"),r.getString("serviceunkid"),r.getString("clientunkid"));
 					ob[i].start();
 				}
 				

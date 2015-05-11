@@ -126,9 +126,23 @@ class SendSMS {
 		}
     }
     
-    public static void main(String args[]){
-    	SendSMS s=new SendSMS();
-    	//s.connect();
+
+    public String to_num(String unkid) {
+    	String query="Select phoneno from client_master where clientunkid="+unkid;
+    	String to=null;
+    	//ResultSet rs1=null;
+    	try {
+			rs=db.selectDb(query);
+			
+			if(rs.next())
+				to=rs.getString("phoneno");
+			//return to_num;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return to;
     }
 
 	public boolean checkWords(String unkid, String from, String sub, String cont) {
@@ -138,51 +152,41 @@ class SendSMS {
    	 
    	// String query="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and required_email like '%"+from+"%'";
 		String res="";
-		String query="Select keyword from imp_lexicon_set;";
+		String query="Select distinct keyword from imp_lexicon_set order by keyword;";
    	 System.out.println(query+"for user "+unkid);
    	 
    	 try {
 			rs=db.selectDb(query);
-			
+		
 			while(rs.next()) {
 				System.out.println("inside while if of send");
 				//tt.send(rs.getString("phoneno"),from, sub,cont);
-				res=rs.getString("keyword")+",";
-				System.out.println("number 2");
-				System.out.println(res+".......@@@@@@@@@@@@@@@");
-				return true;
-			}
-			
-			System.out.println(res+"************************************");
-			
-			if(res.contains(cont)){
-				query="select phoneno from client_master where clientunkid="+unkid;
-				rs=db.selectDb(query);
-				tt.send(rs.getString("phoneno"),from, sub,cont);
-				System.out.println("in send sms compare........................");
-				return true;
-			}
-			else {
-				System.out.println("not imp mail..");
-				return false;
-			}
-			/*else{
-				String query_reject="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and blocked_email like '%"+from+"%'";
-
-		    	System.out.println(query_reject);
-		    	 
-		    	
-				rs=db.selectDb(query_reject);
+				
+				if(cont.contains(rs.getString("keyword"))) {
 					
-				if(rs.next()) {
-					System.out.println("inside else of send");
-					System.out.println("mail rejected");
-					//tt.send(rs.getString("phoneno"),from, sub);
-					return true;
+					System.out.println(cont.length()+" is th length..////////////");
+					if(cont.length()>1400) {
+						cont=cont.substring(0, 1400);
+						System.out.println(cont.length()+" is the length..////////////");
+					}
+					String to=to_num(unkid);
+					
+					if(to != null) {
+						tt.send(to_num(unkid), from, sub, cont);
+						return true;
+					}
+					else {
+						System.out.println("Problem fetching phone number for user: "+unkid);
+						System.out.println("Phone number fetched was: "+to);
+						return false;
+					}
+					//break;
 				}
-				else
-					return false;
-			} */
+				//System.out.println("number 2");
+				System.out.println(res+".......@@@@@@@@@@@@@@@");
+				//return true;
+			}
+			return false;
    	 	}	
 		catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -190,4 +194,11 @@ class SendSMS {
 			return false;
 		}
 	}
+	
+	/*public static void main(String args[]){
+		SendSMS s=new SendSMS();
+		
+		if(s.checkWords("12", "akshar.joshi91@gmail.com", "Danger","danger is danger"))
+			System.out.println("success");
+	}*/
 }

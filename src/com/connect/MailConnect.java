@@ -19,21 +19,22 @@ public class MailConnect extends Thread{
 	Store store=null;
 	Folder folder=null;
 	String mailService="";//"imap-mail.outlook.com";
-	String username, pass, unkid;
+	String username, pass, service_unkid, unkid;
 	DatabaseConnection db;
 	int old_count=0, current_count=0;
 
-	public MailConnect(String uname,String pass, String unid) {
+	public MailConnect(String uname,String pass, String service_unid, String unid) {
 		// TODO Auto-generated constructor stub
 		
 		db=new DatabaseConnection();
 		this.username=uname.trim();
 		this.pass=pass.trim();
+		this.service_unkid=service_unid;
 		unkid=unid;
 		
 		System.out.println("username in mail connect is: "+ username + "///////////////////////");
 		System.out.println("password is: "+pass);
-		String query="select connection_string from service_master where serviceunkid="+unkid;
+		String query="select connection_string from service_master where serviceunkid="+service_unkid;
 		
 		try {
 			ResultSet rs=db.selectDb(query);
@@ -88,24 +89,6 @@ public class MailConnect extends Thread{
 			};
 			executor.scheduleAtFixedRate(periodicTask, 0, 60, TimeUnit.SECONDS);
 	}
-
-	/*public void selectService() {
-        System.out.println("in select service");
-        
-        String query="select serviceunkid from service_service where clientunkid in (select clientunkid from client_master where username='akshar');";
-
-       /*
-        try {
-         	System.out.println("Before session");
-            session = Session.getInstance(props, null);
-            store = session.getStore();
-            System.out.println("here");
-        }
-        catch(Exception e){
-        	e.printStackTrace();
-        } */
-        
-	//}
 	
 	public void connect() {
 		//props = new Properties();
@@ -180,15 +163,12 @@ public class MailConnect extends Thread{
                 }
                 System.out.println("content to string is: "+cont);
             	initiateSendSms(from,sub,cont);
+            	old_count=current_count;
             }
-        	
-            
-            
             else {
             	System.out.println("no new mail recieved");
             }
            // folder.close(false);
-            old_count=current_count;
             //  inbox.close();
         	} 
         	catch (Exception mex) {
@@ -208,10 +188,10 @@ public class MailConnect extends Thread{
             else if(s.checkWords(unkid,from,sub,cont)){
             	System.out.println("Mail sent using keywords...");         	
             }
-            else {
+            /*else {
             	System.out.println("mail from unknown: "+from);
             	s.runCheckSend(unkid,cont);   
-            }
+            }*/
             
             System.out.println("after check........");
             /*s.checkBlock(unkid);
