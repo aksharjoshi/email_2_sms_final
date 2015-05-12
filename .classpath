@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_31]">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
@@ -13,13 +13,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Downloads/twilio-java-sdk-4.0.0-jar-with-dependencies.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/mysql-connector-java-5.1.35-bin.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Desktop/misc/apache-tomcat-8.0.21/lib/mail.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Downloads/lingpipe-4.0.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Desktop/lucene-5.1.0/core/lucene-core-5.1.0.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Downloads/porter-stemmer-1.4.jar"/>
-	<classpathentry kind="lib" path="/Users/Akshar/Downloads/lucene-5.1.0/demo/lucene-demo-5.1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/apache-tomcat-8.0.21-windows-x86/apache-tomcat-8.0.21/lib/mail.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rohan/Desktop/mysql-connector-java-5.1.35-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rohan/Desktop/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rohan/Desktop/twilio-java-sdk-4.0.0-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Rohan/Downloads/porter-stemmer-1.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
