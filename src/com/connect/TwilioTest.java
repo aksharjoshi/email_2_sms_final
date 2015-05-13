@@ -27,7 +27,7 @@ public class TwilioTest {
 		// Build the parameters 		
 		params.add(new BasicNameValuePair("To", to_num)); 
 		params.add(new BasicNameValuePair("From", "+14796897300")); 
-		params.add(new BasicNameValuePair("Body", "You have a new mail from"+email_from+". \nWith the subject: "+sub+"\n Content of the mail is: "+cont+"Kindly check"));
+		params.add(new BasicNameValuePair("Body", "You have a new mail from: "+email_from+" \nWith the subject: "+sub+"\n Content of the mail is: "+cont+"\nKindly check"));
 		
 		System.out.println("in twilio..");
 		MessageFactory messageFactory = client.getAccount().getMessageFactory(); 

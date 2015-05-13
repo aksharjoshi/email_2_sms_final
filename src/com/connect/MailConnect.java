@@ -21,12 +21,14 @@ public class MailConnect extends Thread{
 	String mailService="";//"imap-mail.outlook.com";
 	String username, pass, service_unkid, unkid;
 	DatabaseConnection db;
-	int old_count=0, current_count=0;
+	int old_count=0, current_count=0,num=0;
 
-	public MailConnect(String uname,String pass, String service_unid, String unid) {
+	public MailConnect(String uname,String pass, String service_unid, String unid, int count) {
 		// TODO Auto-generated constructor stub
-		
-		db=new DatabaseConnection();
+		db =new DatabaseConnection();
+		db.createConnection();
+		//db=db.getConnection();
+		num=count;
 		this.username=uname.trim();
 		this.pass=pass.trim();
 		this.service_unkid=service_unid;
@@ -34,6 +36,7 @@ public class MailConnect extends Thread{
 		
 		System.out.println("username in mail connect is: "+ username + "///////////////////////");
 		System.out.println("password is: "+pass);
+		
 		String query="select connection_string from service_master where serviceunkid="+service_unkid;
 		
 		try {
@@ -51,6 +54,7 @@ public class MailConnect extends Thread{
 		//username=null;
 		
 		props.setProperty("mail.store.protocol", "imaps");
+		
 		session = Session.getInstance(props, null);
 		//new GMailAuthenticator("akshar.joshi91@gmail.com", "navy4242"));
 		
@@ -74,7 +78,7 @@ public class MailConnect extends Thread{
         catch(Exception e2) {
         	e2.printStackTrace();
         }
-		
+		db.close();
 	}
 		
 	public void run(){
@@ -85,6 +89,31 @@ public class MailConnect extends Thread{
 			    public void run() {
 			        // Invoke method(s) to do the work
 			    	connect();
+			    	ObjectCreation obj=new ObjectCreation();
+			    	db.createConnection();
+			    	//int num=obj.getNum();
+			    	try{
+			    		ResultSet rs=db.selectDb("Select count(client_master.clientunkid) as CNT from email_2_sms.client_master");
+			    		int curr_num=0;
+			    		
+			    		if(rs.next())
+			    			curr_num=rs.getInt("CNT");
+			    		
+			    		if(curr_num>num){
+			    			System.out.println("*************************number of users changed..**************");
+				    		
+			    			stop();
+			    			rs.close();
+			    			db.close();
+			    			obj.createObject();
+			    		}
+			    	}
+			    	catch(Exception e){
+			    		e.printStackTrace();
+			    	}
+			    	finally{
+			    		db.close();
+			    	}
 			    }
 			};
 			executor.scheduleAtFixedRate(periodicTask, 0, 60, TimeUnit.SECONDS);
@@ -93,14 +122,11 @@ public class MailConnect extends Thread{
 	public void connect() {
 		//props = new Properties();
         System.out.println("here before prop");
+        //Thread.this.stop(null);
 
+        db.createConnection();
         //props.setProperty("mail.store.protocol", "imaps");
         try {
-        	/*System.out.println("Before session");
-            session = Session.getInstance(props, null);
-            store = session.getStore();
-            System.out.println("here");
-            */
         	System.out.println("For "+username+" ***************************");
         	System.out.println("connected");
             folder = store.getFolder("INBOX");
@@ -111,10 +137,9 @@ public class MailConnect extends Thread{
             Message[] UNReadmessages = folder.search(ft);
             
             current_count=folder.getMessageCount();
-        	
+
         	if(current_count>old_count){
-        		
-                
+
                 System.out.println("unread: "+(folder.getMessageCount()-UNReadmessages.length));
 
                 Message msg = folder.getMessage(folder.getMessageCount());
@@ -168,11 +193,15 @@ public class MailConnect extends Thread{
             else {
             	System.out.println("no new mail recieved");
             }
+        	//db.close();
            // folder.close(false);
             //  inbox.close();
         	} 
         	catch (Exception mex) {
         		mex.printStackTrace();
+        	}
+        	finally{
+        		db.close();
         	}
 	}
 	

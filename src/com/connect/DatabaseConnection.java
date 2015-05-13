@@ -10,29 +10,33 @@ public class DatabaseConnection {
 	ResultSet rs,rs1;
     Statement stmt = null,stmt2=null;
 	
-	public DatabaseConnection(){		
+	public DatabaseConnection(){	
+		
+	}
+	
+	public void createConnection(){
 		try {			
-				Class.forName("com.mysql.jdbc.Driver").newInstance();
-				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/email_2_sms","root","");
-				//con = DriverManager.getConnection("jdbc:mysql://us-cdbr-iron-east-02.cleardb.net:3306/ad_8450c6a268b54de","bf076a1488c6b3","3dc63386");
-				stmt = con.createStatement();
-				stmt2 = con.createStatement();
-				
-				if(!con.isClosed())
-					System.out.println("Successfully Connected!!!");
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection("jdbc:mysql://wmsteam2.cnkjhozr1cjt.us-west-1.rds.amazonaws.com:3306/email_2_sms","team2","wmsteam2");
+			//con = DriverManager.getConnection("jdbc:mysql://us-cdbr-iron-east-02.cleardb.net:3306/ad_8450c6a268b54de","bf076a1488c6b3","3dc63386");
+			stmt = con.createStatement();
+			stmt2 = con.createStatement();
+			
+			if(!con.isClosed())
+				System.out.println("Successfully Connected!!!");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public String signUp(String firstname, String lastname, String emailid, String pwd){
@@ -40,7 +44,7 @@ public class DatabaseConnection {
 		int rowcount;
 		try {
 			System.out.println("Inside DATABASE Signup");
-			String query = "Insert into client_master (firstname, lastname, username, password) values ('" + firstname + "', '" + lastname + "', '"+emailid+"', '"+pwd+"')";
+			String query = "Insert into email_2_sms.client_master (firstname, lastname, username, password) values ('" + firstname + "', '" + lastname + "', '"+emailid+"', '"+pwd+"')";
 			PreparedStatement ps=con.prepareStatement(query);
 			
 			rowcount=ps.executeUpdate();
@@ -159,6 +163,20 @@ public class DatabaseConnection {
 			e.printStackTrace();
 		}
 		return count;
+	}
+	
+	public void close()
+	{
+		try {
+			con.close();
+			//stmt.close();
+			//stmt2.close();
+			//rs.close();
+//			rs1.close();
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }

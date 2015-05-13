@@ -2,9 +2,7 @@ package com.connect;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -12,9 +10,6 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.aliasi.tokenizer.PorterStemmerTokenizerFactory;
-import com.aliasi.tokenizer.Tokenizer;
-import com.aliasi.tokenizer.TokenizerFactory;
 //import org.apache.lucene.analysis.PorterStemmer;
 
 //import org.apache.lucene.analysis;
@@ -28,6 +23,7 @@ class SendSMS {
      public SendSMS ()
      {
     	 db=new DatabaseConnection();
+    	 db.createConnection();
     	 tt=new TwilioTest();
      }
      
@@ -35,7 +31,7 @@ class SendSMS {
     	 
     	 //String query="select * from client_service where clientunkid="+unkid+" and required_email in ('"+from+"'";
     	 
-    	 String query="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and required_email like '%"+from+"%'";
+    	 String query="select * from email_2_sms.client_service JOIN email_2_sms.client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and required_email like '%"+from+"%'";
 
     	 System.out.println(query+"for user "+unkid);
     	 
@@ -48,7 +44,7 @@ class SendSMS {
 				return true;
 			}
 			else{
-				String query_reject="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and blocked_email like '%"+from+"%'";
+				String query_reject="select * from email_2_sms.client_service JOIN email_2_sms.client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and blocked_email like '%"+from+"%'";
 
 		    	System.out.println(query_reject);
 		    	 
@@ -58,11 +54,13 @@ class SendSMS {
 				if(rs.next()) {
 					System.out.println("inside else of send");
 					System.out.println("mail rejected");
-					//tt.send(rs.getString("phoneno"),from, sub);
+					//tt.send(rs.getString("phoneno"),from, sub);\
+					db.close();
 					return true;
 				}
-				else
+				else {
 					return false;
+				}
 			} 
     	}	
 		catch (SQLException e) {
@@ -70,6 +68,9 @@ class SendSMS {
 			e.printStackTrace();
 			return false;
 		}
+    	 finally{
+    		 db.close();
+    	 }
      }
     
      
@@ -128,8 +129,9 @@ class SendSMS {
     
 
     public String to_num(String unkid) {
-    	String query="Select phoneno from client_master where clientunkid="+unkid;
+    	String query="Select phoneno from email_2_sms.client_master where clientunkid="+unkid;
     	String to=null;
+    	db.createConnection();
     	//ResultSet rs1=null;
     	try {
 			rs=db.selectDb(query);
@@ -142,18 +144,19 @@ class SendSMS {
 			e.printStackTrace();
 			return null;
 		}
+    	finally{
+    		db.close();
+    	}
 		return to;
     }
 
 	public boolean checkWords(String unkid, String from, String sub, String cont) {
-		// TODO Auto-generated method stub
-		
-   	 //String query="select * from client_service where clientunkid="+unkid+" and required_email in ('"+from+"'";
-   	 
-   	// String query="select * from client_service JOIN client_master on client_service.clientunkid=client_master.clientunkid where client_master.clientunkid="+unkid+"  and required_email like '%"+from+"%'";
+	
 		String res="";
-		String query="Select distinct keyword from imp_lexicon_set order by keyword;";
+		String query="Select distinct keyword from email_2_sms.imp_lexicon_set order by keyword;";
    	 System.out.println(query+"for user "+unkid);
+   	 
+   	db.createConnection();
    	 
    	 try {
 			rs=db.selectDb(query);
@@ -193,6 +196,9 @@ class SendSMS {
 			e.printStackTrace();
 			return false;
 		}
+   	 finally{
+   		 db.close();
+   	 }
 	}
 	
 	/*public static void main(String args[]){
