@@ -79,7 +79,7 @@ class SendSMS {
     	 connect(content);
      }
      
-    public void connect(String content) {
+    public String connect(String content) {
     	URL url;
     	URLConnection yc;
     	BufferedReader in;
@@ -117,13 +117,15 @@ class SendSMS {
 	        System.out.println(polarity_final);
 	        
 	        in.close();
-		    
+		    return polarity_final;
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null;
 		}
     }
     
@@ -160,21 +162,24 @@ class SendSMS {
    	 
    	 try {
 			rs=db.selectDb(query);
-		
+			int tf=0;
 			while(rs.next()) {
 				System.out.println("inside while if of send");
 				//tt.send(rs.getString("phoneno"),from, sub,cont);
 				
 				if(cont.contains(rs.getString("keyword"))) {
-					
+					tf++;
 					System.out.println(cont.length()+" is th length..////////////");
 					if(cont.length()>1400) {
 						cont=cont.substring(0, 1400);
 						System.out.println(cont.length()+" is the length..////////////");
 					}
 					String to=to_num(unkid);
+					String polarity=connect(cont);
 					
-					if(to != null) {
+					System.out.println("tf is : "+tf);
+					
+					if(to != null && (tf!=0 || polarity.equalsIgnoreCase("negative"))) {
 						tt.send(to_num(unkid), from, sub, cont);
 						return true;
 					}
@@ -201,10 +206,11 @@ class SendSMS {
    	 }
 	}
 	
-	/*public static void main(String args[]){
+/*	public static void main(String args[]){
 		SendSMS s=new SendSMS();
 		
-		if(s.checkWords("12", "akshar.joshi91@gmail.com", "Danger","danger is danger"))
+		if(s.checkWords("2", "akshar.joshi91@gmail.com", "Danger","danger is danger"))
 			System.out.println("success");
-	}*/
+	}
+*/
 }
