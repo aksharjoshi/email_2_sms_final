@@ -1,6 +1,5 @@
 package com.connect;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -9,7 +8,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
-import javax.mail.internet.InternetHeaders;
 import javax.mail.search.FlagTerm;
 
 public class MailConnect extends Thread{
