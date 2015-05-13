@@ -10,12 +10,6 @@ import java.net.URLEncoder;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-<<<<<<< HEAD
-=======
-//import com.aliasi.tokenizer.PorterStemmerTokenizerFactory;
-//import com.aliasi.tokenizer.Tokenizer;
-//import com.aliasi.tokenizer.TokenizerFactory;
->>>>>>> origin/master
 //import org.apache.lucene.analysis.PorterStemmer;
 
 //import org.apache.lucene.analysis;
